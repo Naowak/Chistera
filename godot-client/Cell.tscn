@@ -1,0 +1,82 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://assets/cells/cell.png" type="Texture" id=1]
+[ext_resource path="res://assets/cells/cell_front_white.png" type="Texture" id=2]
+[ext_resource path="res://Cell.gd" type="Script" id=3]
+[ext_resource path="res://Xolonium-Regular.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="SpriteFrames" id=1]
+
+animations = [ {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "normal",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "white",
+"speed": 5.0
+} ]
+_sections_unfolded = [ "Resource" ]
+
+[sub_resource type="DynamicFont" id=2]
+
+size = 60
+use_mipmaps = false
+use_filter = false
+font_data = ExtResource( 4 )
+_sections_unfolded = [ "Font", "Resource", "Settings" ]
+
+[node name="Cell" type="AnimatedSprite" index="0"]
+
+frames = SubResource( 1 )
+animation = "normal"
+script = ExtResource( 3 )
+_sections_unfolded = [ "Transform" ]
+q = 0
+r = 0
+
+[node name="Label" type="Label" parent="." index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -129.0
+margin_top = -109.0
+margin_right = 122.0
+margin_bottom = 77.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+uppercase = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "custom_colors", "custom_fonts" ]
+
+[node name="Area2D" type="Area2D" parent="." index="1"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+_sections_unfolded = [ "Pickable" ]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D" index="0"]
+
+build_mode = 0
+polygon = PoolVector2Array( -153.908, -89.743, 1.93365, -141.007, 163.927, -83.5913, 182.382, 41.4921, -6.26855, 107.11, -186.717, 27.1383 )
+
+[connection signal="input_event" from="Area2D" to="." method="_on_Area2D_input_event"]
+
+

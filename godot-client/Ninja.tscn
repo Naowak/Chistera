@@ -1,0 +1,66 @@
+[gd_scene load_steps=33 format=2]
+
+[ext_resource path="res://assets/ninja_sprites/png/Idle__000.png" type="Texture" id=1]
+[ext_resource path="res://assets/ninja_sprites/png/Idle__001.png" type="Texture" id=2]
+[ext_resource path="res://assets/ninja_sprites/png/Idle__002.png" type="Texture" id=3]
+[ext_resource path="res://assets/ninja_sprites/png/Idle__003.png" type="Texture" id=4]
+[ext_resource path="res://assets/ninja_sprites/png/Idle__004.png" type="Texture" id=5]
+[ext_resource path="res://assets/ninja_sprites/png/Idle__005.png" type="Texture" id=6]
+[ext_resource path="res://assets/ninja_sprites/png/Idle__006.png" type="Texture" id=7]
+[ext_resource path="res://assets/ninja_sprites/png/Idle__007.png" type="Texture" id=8]
+[ext_resource path="res://assets/ninja_sprites/png/Idle__008.png" type="Texture" id=9]
+[ext_resource path="res://assets/ninja_sprites/png/Idle__009.png" type="Texture" id=10]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Attack__000.png" type="Texture" id=11]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Attack__001.png" type="Texture" id=12]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Attack__002.png" type="Texture" id=13]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Attack__003.png" type="Texture" id=14]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Attack__004.png" type="Texture" id=15]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Attack__005.png" type="Texture" id=16]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Attack__006.png" type="Texture" id=17]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Attack__007.png" type="Texture" id=18]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Attack__008.png" type="Texture" id=19]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Attack__009.png" type="Texture" id=20]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Throw__000.png" type="Texture" id=21]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Throw__001.png" type="Texture" id=22]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Throw__002.png" type="Texture" id=23]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Throw__003.png" type="Texture" id=24]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Throw__004.png" type="Texture" id=25]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Throw__005.png" type="Texture" id=26]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Throw__006.png" type="Texture" id=27]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Throw__007.png" type="Texture" id=28]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Throw__008.png" type="Texture" id=29]
+[ext_resource path="res://assets/ninja_sprites/png/Jump_Throw__009.png" type="Texture" id=30]
+[ext_resource path="res://Ninja.gd" type="Script" id=31]
+
+[sub_resource type="SpriteFrames" id=1]
+
+animations = [ {
+"frames": [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ) ],
+"loop": true,
+"name": "normal",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ) ],
+"loop": true,
+"name": "jump_attack",
+"speed": 15.0
+}, {
+"frames": [ ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 28 ), ExtResource( 29 ), ExtResource( 30 ) ],
+"loop": true,
+"name": "jump_throw",
+"speed": 15.0
+} ]
+_sections_unfolded = [ "Resource" ]
+
+[node name="Ninja" type="AnimatedSprite"]
+
+visible = false
+frames = SubResource( 1 )
+animation = "normal"
+frame = 6
+playing = true
+offset = Vector2( -20, -210 )
+script = ExtResource( 31 )
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+
