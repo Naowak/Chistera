@@ -4,48 +4,10 @@ import ssl
 from SimpleWebSocketServer import WebSocket, SimpleWebSocketServer, SimpleSSLWebSocketServer
 from optparse import OptionParser
 import json
+sys.path.append("../game/")
+import Map
 
 clients = []
-
-# def clear_elem(elem) :
-# 	ret = ""
-# 	cpt = 0
-# 	for c in elem :
-# 		if c == '(' :
-# 			if cpt == 1 :
-# 				clear_elem()
-# 			cpt += 1
-# 		elif c == ')' :
-# 			cpt -= 1
-# 		elif cpt > 0 :
-# 			ret += c
-# 	return ret
-
-# def clear_elem(elem, begin = 0) :
-# 	ret = ""
-# 	cpt = begin
-# 	for i, c in enumerate(elem) :
-# 		if c == '(' :
-# 			if cpt == begin + 1 :
-# 				clear_elem(elem[i+1:], begin + 1)
-
-
-# def decode(mess) :
-# 	dico = {}
-# 	keyvalue = []
-# 	for elem in mess.split(", ") :
-# 		keyvalue = elem.split(':')
-# 		key = keyvalue[0]
-# 		key = key.replace('(', '')
-# 		value = keyvalue[1]
-# 		if '(' in value :
-# 			value = decode(value)
-# 		else :
-# 			value = value.replace(')', '')
-# 		dico[key] = value
-# 	return dico
-
-
 
 def encode(data) :
 	return json.dumps(data)
@@ -59,15 +21,18 @@ class GameServer(WebSocket) :
 		print("Message reçu : ", self.data)
 		dico = decode(self.data)
 		if dico["action"] == "new_game" :
-			map_anchor = [250, 200]
+			pos_center = [550, 300]
 			ray = 5
+			theMap = Map.Map(ray)
 			coord_ninja = [0, 0]
 			msg = {"action" : "new_game", 
-				"map_anchor" : map_anchor, 
-				"ray" : ray, 
+				"pos_center" : pos_center, 
+				"grid" : theMap.get_serializable_grid(), 
 				"coord_ninja" : coord_ninja}
+			# msg = "hello"
 			mess = encode(msg)
 			self.sendMessage(mess)
+			print("Message envoye : "  + mess)
 
 	def handleConnected(self) :
 		print(self.address, 'connected')

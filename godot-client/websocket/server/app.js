@@ -1,8 +1,7 @@
 var http = require('http'),
-	WS = require('ws').Server;
+	ws = require('websocket').server;
 
-
-// Send non-compliant requests to /public/index.html
+// Send bad requests to ./public/index.html
 var server = http.createServer(function(req, res) {
 	res.writeHead(200, { 'Content-type': 'text/html'});
 	res.end(fs.readFileSync(__dirname + '/public/index.html'));
@@ -10,41 +9,48 @@ var server = http.createServer(function(req, res) {
 	console.log('Listening at: http://localhost:3000');
 });
 
-var wss = new WS({server: server, perMessageDeflate: false})
+// Start server
+var wsServer = new ws({
+	httpServer: server,
+	autoAcceptConnections: false,
+	maxReceivedFrameSize: 125,    // Max of 125 bytes per frame
+	maxReceivedMessageSize: 8192}); // Max of 8192 bytes per message
 
-
-wss.on('connection', function(socket) {
-	console.log('User Connected: ' + socket._socket.remoteAddress.replace("::ffff:","") + " - " + new Date())
+wsServer.on('request', function(request) {
+	try {
+		var connection = request.accept('namethiswhatever', request.origin);
+	} catch(err) {
+		console.log(err);
+		return;
+	}
+	console.log("User Connected: " + connection.remoteAddress.replace("::ffff:","") + " - " + new Date());
 	
-	socket.on('message', function(msg) {
-		console.log(msg)
-    wss.clients.forEach(function(client) {
-			try {
-				client.send(msg)
-			} catch (err) {
-				err
-			}
-    });
+	connection.on('message', function(msg) {
+		if (msg.type === 'utf8') {
+			console.log('Received Message: ' + msg.utf8Data);
+			connection.sendUTF(msg.utf8Data);
+		} else if (msg.type === 'binary') {
+			console.log('Received Binary Message of ' + msg.binaryData.length + ' bytes');
+			connection.sendBytes(msg.binaryData);
+		}
 	});
 	
-	socket.on('error', function(er) {
-		console.log(er)
+	connection.on('error', function(err) {
+		console.log(err);
 	});
 	
-	// user disconnected
-	socket.on('close', function(connection) {
-		console.log("User Disconnected: " + socket._socket.remoteAddress.replace("::ffff:","") + " - " + new Date())
+	connection.on('close', function(reasonCode, description) {
+		console.log("User Disconnected: " + connection.remoteAddress.replace("::ffff:","") + " - " + new Date());
 	});
 });
-    
 
 function _on_time() {
-	var msg = new Date().toString()
-	wss.clients.forEach(function(client) {
+	var msg = new Date().toString();
+	wsServer.connections.forEach(function(client) {
 		try {
-			client.send(msg)
+			client.sendUTF(msg);
 		} catch (err) {
-			err
+			console.log(err);
 		}
 	});
 };

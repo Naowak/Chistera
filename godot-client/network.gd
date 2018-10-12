@@ -28,8 +28,8 @@ func sendMessage(msg) :
 # entry point
 func _ready():
 	websocket = preload('websocket/websocket.gd').new(self)
-	websocket.start('localhost',8000)
+	websocket.connect('localhost',8000)
 	websocket.set_receiver(self,'_on_message')
 
 func _process(delta):
-	websocket.run()
+	websocket.listen()

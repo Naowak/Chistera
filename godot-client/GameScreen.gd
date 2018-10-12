@@ -12,13 +12,15 @@ func create_ninja(posx, posy) :
 	add_child(nin)
 
 func new_game(data) :
-	var ray = data["ray"]
-	var map_anchor = data["map_anchor"]
-	var coord_ninja = data["coord_ninja"]
-	$Map.create_map(ray, map_anchor)
-	var cell = $Map.get_cell_node_from_coord(coord_ninja)
-	create_ninja(cell.position.x, cell.position.y)
-	
+#	var ray = data["ray"]
+#	var map_anchor = data["map_anchor"]
+#	var coord_ninja = data["coord_ninja"]
+#	$Map.create_map(ray, map_anchor)
+#	var cell = $Map.get_cell_node_from_coord(coord_ninja)
+#	create_ninja(cell.position.x, cell.position.y)
+	var grid = data["grid"]
+	var pos_center = data["pos_center"]
+	$Map.create_map_from_grid(grid, pos_center)
 
 func _ready():
 #	var msg = {"action" : "new_game", 

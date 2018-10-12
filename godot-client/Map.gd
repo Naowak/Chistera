@@ -4,11 +4,30 @@ var Cell = preload("res://Cell.tscn")
 
 var last_cell_selected_coord = [null, null]
 
+var mv_r = [70, 0]
+var mv_l = [-70, 0]
+var mv_dr = [35, 38]
+var mv_ul = [-35, -38]
+
 var cpt = 0
 var tab_cells = []
 
 var q #x
 var r #y
+
+func create_map_from_grid(grid, pos_center) :
+	var cpt = 0	
+	for line in grid :
+		for elem in line :
+			var c = elem[0]
+			var kind = elem[1]
+			var cell = Cell.instance()
+			cell.position.x = pos_center[0] + mv_r[0] * c[0] + mv_dr[0] * c[1]
+			cell.position.y = pos_center[1] + mv_dr[1] * c[1]
+			cell.set_name("Cell_" + str(cpt))
+			cpt += 1
+			add_child(cell)
+			cell.get_node("Label").text = str(c[0]) + ' / ' + str(c[1])
 
 func create_one_cell(posx, posy) :
 	var c = Cell.instance()
