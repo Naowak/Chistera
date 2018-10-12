@@ -9,12 +9,12 @@
 
 animations = [ {
 "frames": [ ExtResource( 1 ) ],
-"loop": true,
+"loop": false,
 "name": "normal",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 2 ) ],
-"loop": true,
+"loop": false,
 "name": "white",
 "speed": 5.0
 } ]
@@ -28,12 +28,12 @@ use_filter = false
 font_data = ExtResource( 4 )
 _sections_unfolded = [ "Font", "Resource", "Settings" ]
 
-[node name="Cell" type="AnimatedSprite" index="0"]
+[node name="Cell" type="AnimatedSprite"]
 
 frames = SubResource( 1 )
 animation = "normal"
 script = ExtResource( 3 )
-_sections_unfolded = [ "Transform" ]
+_sections_unfolded = [ "Pause", "Transform" ]
 q = 0
 r = 0
 
@@ -70,12 +70,12 @@ linear_damp = 0.1
 angular_damp = 1.0
 audio_bus_override = false
 audio_bus_name = "Master"
-_sections_unfolded = [ "Pickable" ]
+_sections_unfolded = [ "Audio Bus", "Collision", "Pickable" ]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D" index="0"]
 
 build_mode = 0
-polygon = PoolVector2Array( -153.908, -89.743, 1.93365, -141.007, 163.927, -83.5913, 182.382, 41.4921, -6.26855, 107.11, -186.717, 27.1383 )
+polygon = PoolVector2Array( -153.908, -89.743, 1.93365, -141.007, 163.927, -83.5913, 188.966, 41.0051, 4.4165, 120.976, -186.717, 27.1383 )
 
 [connection signal="input_event" from="Area2D" to="." method="_on_Area2D_input_event"]
 

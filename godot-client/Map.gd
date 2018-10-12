@@ -96,7 +96,7 @@ func get_cell_node_from_coord(coord) :
 		cmp += 1
 		
 func _ready():
-	#create_map(RAY, [400, 150])
+	#create_map(5, [400, 150])
 	#create_ninja()
 	pass
 

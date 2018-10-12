@@ -5,10 +5,7 @@ extends AnimatedSprite
 # var b = "textvar"
 
 func _ready():
-	var a = {"send":"ok", "commo" : 23, "co" : {"ed" : 45, "p" : "cp"}}
-	var b = var2str(a)
-	var c = str2var(b)
-	print(b)
+	pass
 	
 #func _process(delta):
 #	# Called every frame. Delta is time since last frame.

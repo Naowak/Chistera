@@ -11,10 +11,15 @@ func encode(mess) :
 	
 # handler to text messages
 func _on_message(msg):
-	var d = decode(msg)
-	print("Message reçu : ", str(d))
-	if "coord_q" in d and "coord_r" in d :
-		pass
+	var data = decode(msg)
+	print("Message reçu : ", str(data))
+	if data["action"] == "new_game" :
+		var gamescreen = get_tree().get_root().get_node("GameScreen")
+		gamescreen.new_game(data)
+
+func sendMessage(msg) :
+	var mess = encode(msg)
+	websocket.send(mess)
 
 # handler to some button on you scene
 #func _on_some_button_released():
@@ -25,9 +30,6 @@ func _ready():
 	websocket = preload('websocket/websocket.gd').new(self)
 	websocket.start('localhost',8000)
 	websocket.set_receiver(self,'_on_message')
-	var dict = {"mon" : 6, "hello" : 8}
-	var mess = encode(dict)
-	websocket.send(mess)
 
 func _process(delta):
 	websocket.run()
