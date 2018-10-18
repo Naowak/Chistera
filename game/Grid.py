@@ -1,4 +1,6 @@
 
+import random
+
 class Cell() :
 
 	kinds = ["hole", "flor", "full"]
@@ -12,7 +14,7 @@ class Cell() :
 		return '[' + str(self.coord) + " : "  + str(self.kind) + ']'
 
 
-class Map() :
+class Grid() :
 
 	q = 0
 	r = 0
@@ -20,13 +22,23 @@ class Map() :
 	def __init__(self, ray) :
 		self.grid = []
 		self.create_map(ray)
+		self.available_coords = self.get_available_coords()
 
 	def create_map(self, ray) :
 		"""Create the map"""
 
+		def random_kind() :
+			a = random.random()
+			if a < 0.1 :
+				return "full"
+			if a < 0.15 :
+				return "empty"
+			return "flor"
+
 		def create_one_line(self, nb_cell, q, r, ray) :
 			for i in range(nb_cell) :
-				c = Cell("flor", [q, r])
+				kind = random_kind()
+				c = Cell(kind, [q, r])
 				self.grid[r + ray] += [c]
 				q += 1
 			return q, r
@@ -46,6 +58,15 @@ class Map() :
 			r += 1
 			q = -ray
 			nb_cell -= 1
+
+	def get_available_coords(self) :
+		available_coords = []
+		for line in self.grid :
+			for cell in line :
+				if cell.kind == "flor" :
+					available_coords += [cell.coord]
+		return available_coords
+
 
 	def get_serializable_grid(self) :
 		serializable_grid = []

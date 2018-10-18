@@ -3,6 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2013 Dave P.
 '''
 import sys
+import traceback
 VER = sys.version_info[0]
 if VER >= 3:
     import socketserver
@@ -321,6 +322,8 @@ class WebSocket(object):
             tosend -= sent
 
          except socket.error as e:
+            traceback.print_exc()
+            print(e)
             # if we have full buffers then wait for them to drain and try again
             if e.errno in [errno.EAGAIN, errno.EWOULDBLOCK]:
                if send_all:
@@ -632,6 +635,8 @@ class SimpleWebSocketServer(object):
                       raise Exception('received client close')
 
          except Exception as n:
+            traceback.print_exc()
+            print(n)
             self._handleClose(client)
             del self.connections[ready]
             self.listeners.remove(ready)
@@ -647,6 +652,8 @@ class SimpleWebSocketServer(object):
                self.connections[fileno] = self._constructWebSocket(newsock, address)
                self.listeners.append(fileno)
             except Exception as n:
+               traceback.print_exc()
+               print(n)
                if sock is not None:
                   sock.close()
          else:
@@ -656,6 +663,8 @@ class SimpleWebSocketServer(object):
             try:
                client._handleData()
             except Exception as n:
+               traceback.print_exc()
+               print(n)
                self._handleClose(client)
                del self.connections[ready]
                self.listeners.remove(ready)

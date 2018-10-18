@@ -4,10 +4,12 @@ extends AnimatedSprite
 # var a = 2
 # var b = "textvar"
 
+var q = 0
+var r = 0
+
 func _ready():
-	pass
-	
-	
+	$Label.visible = false
+
 #func _process(delta):
 #	# Called every frame. Delta is time since last frame.
 #	# Update game logic here.

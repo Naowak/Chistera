@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/cell.png-d99518416d18231d71ca36c3de462e1c.stex"
+path="res://.import/cell_red.png-69a2c9935623bd0b4891502237251074.stex"
 
 [deps]
 
-source_file="res://assets/cells/cell.png"
-dest_files=[ "res://.import/cell.png-d99518416d18231d71ca36c3de462e1c.stex" ]
+source_file="res://assets/cells/cell_red.png"
+dest_files=[ "res://.import/cell_red.png-69a2c9935623bd0b4891502237251074.stex" ]
 
 [params]
 

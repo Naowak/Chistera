@@ -12,7 +12,7 @@ func encode(mess) :
 # handler to text messages
 func _on_message(msg):
 	var data = decode(msg)
-	print("Message reçu : ", str(data))
+#	print("Message reçu : ", str(data))
 	if data["action"] == "new_game" :
 		var gamescreen = get_tree().get_root().get_node("GameScreen")
 		gamescreen.new_game(data)

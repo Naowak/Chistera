@@ -4,10 +4,11 @@ import ssl
 from SimpleWebSocketServer import WebSocket, SimpleWebSocketServer, SimpleSSLWebSocketServer
 from optparse import OptionParser
 import json
-sys.path.append("../game/")
-import Map
+import GameManager
 
+free_ids = list(range(1, 100))
 clients = []
+gm = GameManager.GameManager()
 
 def encode(data) :
 	return json.dumps(data)
@@ -15,33 +16,38 @@ def encode(data) :
 def decode(mess) :
 	return json.loads(mess)
 
-class GameServer(WebSocket) :
+class MyClient(WebSocket) :
 
 	def handleMessage(self) :
 		print("Message reçu : ", self.data)
 		dico = decode(self.data)
-		if dico["action"] == "new_game" :
-			pos_center = [550, 300]
-			ray = 5
-			theMap = Map.Map(ray)
-			coord_ninja = [0, 0]
-			msg = {"action" : "new_game", 
-				"pos_center" : pos_center, 
-				"grid" : theMap.get_serializable_grid(), 
-				"coord_ninja" : coord_ninja}
-			# msg = "hello"
-			mess = encode(msg)
-			self.sendMessage(mess)
-			print("Message envoye : "  + mess)
+		gm.treat_request(self, dico)
+		# if dico["action"] == "new_game" :
+		# 	pos_center = [550, 300]
+		# 	ray = 5
+		# 	theMap = Grid.Grid(ray)
+		# 	coord_ninja = [0, 0]
+		# 	msg = {"action" : "new_game", 
+		# 		"pos_center" : pos_center, 
+		# 		"grid" : theMap.get_serializable_grid(), 
+		# 		"coord_ninja" : coord_ninja}
+		# 	mess = encode(msg)
+		# 	self.sendMessage(mess)
+		# 	print("Message envoye : "  + mess)
+
+	# def handleMessage(self) :
+
 
 	def handleConnected(self) :
 		print(self.address, 'connected')
-		for client in clients:
-			client.sendMessage(self.address[0] + u' - connected')
+		self.id = free_ids.pop()
+		# for client in clients:
+		# 	client.sendMessage(self.address[0] + u' - connected')
 		clients.append(self)
 
 	def handleClose(self) :
 		clients.remove(self)
+		free_ids.append(self.id)
 		print(self.address, 'closed')
 
 	
@@ -62,7 +68,7 @@ if __name__ == "__main__" :
 
 	(options, args) = parser.parse_args()
 
-	cls = GameServer
+	cls = MyClient
 
 	if options.ssl == 1:
 		server = SimpleSSLWebSocketServer(options.host, options.port, cls, options.cert, options.key, version=options.ver)
