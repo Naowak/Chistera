@@ -1,28 +1,26 @@
-import random
+#coding: utf-8
 
+import random
+import asyncio
+import time
 import Grid
 import Character
+import SGI 
 
 RAY_MAP = 10
 HEROES = ["Ninja"]
 
-# class Team() :
+class Battle(SGI.SGI) :
 
-# 	def __init__(self) :
-# 		self.frist_hero = None
-# 		self.second_hero = None
-# 		self.third_hero = None
+	def __init__(self, game_id, player, team) :
+		super().__init__(game_id)
+		self.bind_player(player)
 
-# 	def 
-
-class Battle() :
-
-	def __init__(self, game_id, player_id, team) :
-		self.game_id = game_id
-		self.player_id = player_id
 		self.grid = Grid.Grid(RAY_MAP)
 		self.team = self.create_team(team)
 		self.on_character = None
+		self.turn = -1
+		self.timeline = self.get_timeline()
 
 	def create_team(self, team) :
 		#dois changer avec la création de character
@@ -37,23 +35,35 @@ class Battle() :
 		return myteam
 
 	def get_state(self) :
-		print(self.team)
+		#on a besoin d'envoye seulement les characters
 		data = {}
 		data_team = [char.get_state() for char in self.team]
 		data["team"] = data_team
 		return data
 
+	def get_timeline(self) :
+		timeline = []
+		for elem in self.team :
+			timeline += [elem]
+		return timeline
 
-	# def run(self) :
+	def is_finished(self) :
+		for char in self.team :
+			if not char.is_dead() :
+				return False
+		return True
 
-	# 	def is_game_finished(self) :
-	# 		#dois changer pour 2 équipe
-	# 		for character in self.team :
-	# 			if character.lp > 0 :
-	# 				return False
-	# 		return True
+	async def run(self) :
+		while not self.is_finished : 
+			self.turn += 1
+			for i, whos_turn in enumerate(self.timeline) :
+				if self.is_finished :
+					break
+				self.on_character = whos_turn
+				time_begin_turn = time.time()
+				while time.time() < time_begin_turn + 30 :
+					asyncio.sleep(0)
 
-	# 	while not is_game_finished(self) :
 
 
 

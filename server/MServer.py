@@ -1,3 +1,5 @@
+#coding: utf-8
+
 import signal
 import sys
 import ssl
@@ -20,27 +22,16 @@ class MyClient(WebSocket) :
 
 	def handleMessage(self) :
 		print("Message reçu : ", self.data)
-		dico = decode(self.data)
-		gm.treat_request(self, dico)
-		# if dico["action"] == "new_game" :
-		# 	pos_center = [550, 300]
-		# 	ray = 5
-		# 	theMap = Grid.Grid(ray)
-		# 	coord_ninja = [0, 0]
-		# 	msg = {"action" : "new_game", 
-		# 		"pos_center" : pos_center, 
-		# 		"grid" : theMap.get_serializable_grid(), 
-		# 		"coord_ninja" : coord_ninja}
-		# 	mess = encode(msg)
-		# 	self.sendMessage(mess)
-		# 	print("Message envoye : "  + mess)
-
-	# def handleMessage(self) :
-
+		data = decode(self.data)
+		if data["step"] == "connexion" :
+			self.name = data["pseudo"]
+		else :
+			gm.treat_request(self, data)
 
 	def handleConnected(self) :
 		print(self.address, 'connected')
-		self.id = free_ids.pop()
+		self.id = free_ids.pop(0)
+		self.name = ""
 		# for client in clients:
 		# 	client.sendMessage(self.address[0] + u' - connected')
 		clients.append(self)
@@ -49,6 +40,9 @@ class MyClient(WebSocket) :
 		clients.remove(self)
 		free_ids.append(self.id)
 		print(self.address, 'closed')
+
+	def send(self, msg) :
+		self.sendMessage(encode(msg))
 
 	
 

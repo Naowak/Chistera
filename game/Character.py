@@ -1,3 +1,5 @@
+#coding: utf-8
+
 class Character() :
 
 	def __init__(self, name, lp, mana, mp, coord) :
@@ -16,5 +18,8 @@ class Character() :
 			"mana" : self.mana,
 			"mp" : self.mp,
 			"coord" : self.coord}
+
+	def is_dead(self) :
+		return self.lp == 0 
 
 

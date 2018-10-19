@@ -46,7 +46,7 @@ use_filter = false
 font_data = ExtResource( 7 )
 _sections_unfolded = [ "Font", "Resource", "Settings" ]
 
-[node name="Cell" type="AnimatedSprite" index="0"]
+[node name="Cell" type="AnimatedSprite"]
 
 scale = Vector2( 0.33, 0.33 )
 frames = SubResource( 1 )
@@ -56,6 +56,7 @@ _sections_unfolded = [ "Pause", "Transform" ]
 
 [node name="Label" type="Label" parent="." index="0"]
 
+visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0

@@ -7,8 +7,8 @@ extends AnimatedSprite
 var q = 0
 var r = 0
 
-func _ready():
-	$Label.visible = false
+func _ready() :
+	pass
 
 #func _process(delta):
 #	# Called every frame. Delta is time since last frame.

@@ -1,15 +1,28 @@
 extends Node2D
 
 var Ninja = preload("res://Ninja.tscn")
+var Zombie = preload("res://Zombie.tscn")
 
-func create_ninja(cell) :
-	var nin = Ninja.instance()
-	nin.scale.x = 0.10
-	nin.scale.y = 0.10
-	nin.position.x = cell.position.x
-	nin.position.y = cell.position.y
-	nin.visible = true
-	add_child(nin)
+var is_on_battle = false
+
+func on_msg(data) :
+	if not "step" in data :
+		print("Error BattleScreen on_msg have no step")
+	if data["step"] == "new_game" :
+		new_game(data)
+
+func create_character(cell, name) :
+	var character
+	if name == "Ninja" :
+		character = Ninja.instance()
+	elif name == "Zombie" :
+		character = Zombie.instance()
+	character.scale.x = 0.15
+	character.scale.y = 0.15
+	character.position.x = cell.position.x
+	character.position.y = cell.position.y
+	character.visible = true
+	add_child(character)
 
 func on_cell_selected(cell) :
 	var cell_flor = get_tree().get_nodes_in_group("cell_flor")
@@ -29,32 +42,20 @@ func on_cell_selected(cell) :
 			cpt += 1
 
 func new_game(data) :
+	is_on_battle = true
 	var grid = data["grid"]
 	var state = data["state"]
 	$Map.create_map_from_grid(grid)
 	for hero in state["team"] :
 		var cell_spawn = $Map.get_cell_node_from_coord(hero["coord"])
-		if hero["name"] == "Ninja" :
-			create_ninja(cell_spawn)
+		create_character(cell_spawn, hero["name"])
 	
 
 func _ready():
-#	var msg = {"action" : "new_game", 
-#				"map_anchor" : [150, 200], 
-#				"ray" : 6, 
-#				"coord_ninja" : [0, 0]}
-#	new_game(msg)
 	pass
 
-
-#func _process(delta):
-#	# Called every frame. Delta is time since last frame.
-#	# Update game logic here.
-#	pass
-
-
-func _on_GameLauncher_pressed():
+func ask_to_play(team):
 	var dict = {}
-	dict["action"] = "ask_to_play"
-	dict["team"] = ["Ninja"]
-	$Network.sendMessage(dict)
+	dict["step"] = "ask_to_play"
+	dict["team"] = team
+	get_tree().get_root().get_node("Jeu/Network").sendMessage(dict)

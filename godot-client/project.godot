@@ -11,7 +11,7 @@ config_version=3
 [application]
 
 config/name="iso2d"
-run/main_scene="res://GameScreen.tscn"
+run/main_scene="res://Jeu.tscn"
 config/icon="res://icon.png"
 
 [display]

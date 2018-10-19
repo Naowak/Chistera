@@ -1,0 +1,342 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://Menu.gd" type="Script" id=1]
+[ext_resource path="res://Launcher.gd" type="Script" id=2]
+[ext_resource path="res://BattleLauncher.gd" type="Script" id=3]
+[ext_resource path="res://Xolonium-Regular.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://assets/ninja_sprites/maniature.png" type="Texture" id=5]
+[ext_resource path="res://NinjaIcon.gd" type="Script" id=6]
+[ext_resource path="res://assets/zombie_sprites/maniature.png" type="Texture" id=7]
+[ext_resource path="res://ZombieIcon.gd" type="Script" id=8]
+
+[sub_resource type="DynamicFont" id=1]
+
+size = 45
+use_mipmaps = false
+use_filter = false
+font_data = ExtResource( 4 )
+_sections_unfolded = [ "Font", "Settings" ]
+
+[sub_resource type="DynamicFont" id=2]
+
+size = 30
+use_mipmaps = false
+use_filter = false
+font_data = ExtResource( 4 )
+_sections_unfolded = [ "Font", "Settings" ]
+
+[sub_resource type="SpriteFrames" id=6]
+
+animations = [ {
+"frames": [ ExtResource( 5 ) ],
+"loop": false,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="DynamicFont" id=4]
+
+size = 60
+use_mipmaps = false
+use_filter = false
+font_data = ExtResource( 4 )
+_sections_unfolded = [ "Font", "Settings" ]
+
+[sub_resource type="SpriteFrames" id=7]
+
+animations = [ {
+"frames": [ ExtResource( 7 ) ],
+"loop": false,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="DynamicFont" id=5]
+
+size = 60
+use_mipmaps = false
+use_filter = false
+font_data = ExtResource( 4 )
+_sections_unfolded = [ "Font", "Settings" ]
+
+[node name="Menu" type="Node2D"]
+
+script = ExtResource( 1 )
+
+[node name="Launcher" type="Node2D" parent="." index="0"]
+
+editor/display_folded = true
+visible = false
+script = ExtResource( 2 )
+
+[node name="LineEditPseudo" type="LineEdit" parent="Launcher" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 668.0
+margin_top = 688.0
+margin_right = 1027.0
+margin_bottom = 712.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 1
+size_flags_horizontal = 1
+size_flags_vertical = 1
+text = "Pseudo"
+focus_mode = 2
+context_menu_enabled = true
+placeholder_alpha = 0.6
+caret_blink = false
+caret_blink_speed = 0.65
+caret_position = 0
+
+[node name="ButtonConnect" type="Button" parent="Launcher" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 1107.0
+margin_top = 639.0
+margin_right = 1346.0
+margin_bottom = 720.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Connect"
+flat = false
+align = 1
+
+[node name="BattleLauncher" type="Node2D" parent="." index="1"]
+
+script = ExtResource( 3 )
+
+[node name="ButtonStart" type="Button" parent="BattleLauncher" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 1027.0
+margin_top = 586.0
+margin_right = 1347.0
+margin_bottom = 698.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Start"
+flat = false
+align = 1
+_sections_unfolded = [ "custom_fonts" ]
+
+[node name="LabelTeamMembers" type="Label" parent="BattleLauncher" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 43.0
+margin_top = 31.0
+margin_right = 291.0
+margin_bottom = 125.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 2 )
+text = "Team Members"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "custom_fonts" ]
+
+[node name="NinjaIcon" type="AnimatedSprite" parent="BattleLauncher" index="2"]
+
+position = Vector2( 114, 223.781 )
+scale = Vector2( 0.6, 0.6 )
+frames = SubResource( 6 )
+animation = "default"
+script = ExtResource( 6 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Label" type="Label" parent="BattleLauncher/NinjaIcon" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 180.0
+margin_top = -136.0
+margin_right = 481.0
+margin_bottom = -17.0
+rect_scale = Vector2( 2, 2 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 4 )
+text = "Ninja"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Mouse", "Rect", "custom_fonts" ]
+
+[node name="CheckButton" type="CheckButton" parent="BattleLauncher/NinjaIcon" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 161.0
+margin_top = 14.0
+margin_right = 237.0
+margin_bottom = 54.0
+rect_scale = Vector2( 3, 3 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+group = null
+flat = false
+align = 0
+_sections_unfolded = [ "Rect" ]
+
+[node name="Area2D" type="Area2D" parent="BattleLauncher/NinjaIcon" index="2"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BattleLauncher/NinjaIcon/Area2D" index="0"]
+
+position = Vector2( 1.78704, 0.0578833 )
+scale = Vector2( 11.7658, 11.5612 )
+build_mode = 0
+polygon = PoolVector2Array( -9.82609, -10.177, 9.82608, -10.177, 9.82608, 10.354, -9.82609, 10.354 )
+
+[node name="ZombieIcon" type="AnimatedSprite" parent="BattleLauncher" index="3"]
+
+position = Vector2( 114.362, 414.176 )
+scale = Vector2( 0.6, 0.6 )
+frames = SubResource( 7 )
+animation = "default"
+script = ExtResource( 8 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Label" type="Label" parent="BattleLauncher/ZombieIcon" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 180.0
+margin_top = -136.0
+margin_right = 415.0
+margin_bottom = -24.0
+rect_scale = Vector2( 2, 2 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 5 )
+text = "Zombie"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect", "custom_fonts" ]
+
+[node name="CheckButton" type="CheckButton" parent="BattleLauncher/ZombieIcon" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 161.0
+margin_top = 14.0
+margin_right = 237.0
+margin_bottom = 54.0
+rect_scale = Vector2( 3, 3 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+group = null
+flat = false
+align = 0
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="Area2D" type="Area2D" parent="BattleLauncher/ZombieIcon" index="2"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BattleLauncher/ZombieIcon/Area2D" index="0"]
+
+build_mode = 0
+polygon = PoolVector2Array( -113.162, -114.227, 113.967, -114.227, 113.967, 115.91, -113.162, 118.918 )
+
+[connection signal="pressed" from="Launcher/ButtonConnect" to="Launcher" method="_on_ButtonConnect_pressed"]
+
+[connection signal="pressed" from="BattleLauncher/ButtonStart" to="BattleLauncher" method="_on_ButtonStart_pressed"]
+
+[connection signal="pressed" from="BattleLauncher/NinjaIcon/CheckButton" to="BattleLauncher/NinjaIcon" method="_on_CheckButton_pressed"]
+
+[connection signal="input_event" from="BattleLauncher/NinjaIcon/Area2D" to="BattleLauncher/NinjaIcon" method="_on_Area2D_input_event"]
+
+[connection signal="pressed" from="BattleLauncher/ZombieIcon/CheckButton" to="BattleLauncher/ZombieIcon" method="_on_CheckButton_pressed"]
+
+[connection signal="input_event" from="BattleLauncher/ZombieIcon/Area2D" to="BattleLauncher/ZombieIcon" method="_on_Area2D_input_event"]
+
+

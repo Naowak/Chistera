@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Jeu.gd" type="Script" id=1]
+[ext_resource path="res://Menu.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Network.tscn" type="PackedScene" id=3]
+[ext_resource path="res://BattleScreen.tscn" type="PackedScene" id=4]
+
+[node name="Jeu" type="Node2D"]
+
+script = ExtResource( 1 )
+
+[node name="Menu" parent="." index="0" instance=ExtResource( 2 )]
+
+[node name="Network" parent="." index="1" instance=ExtResource( 3 )]
+
+[node name="BattleScreen" parent="." index="2" instance=ExtResource( 4 )]
+
+

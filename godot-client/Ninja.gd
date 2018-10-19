@@ -1,14 +1,12 @@
 extends AnimatedSprite
 
-# class member variables go here, for example:
-# var a = 2
-# var b = "textvar"
+var NAME = "Ninja"
+var max_lp = 1000
+var max_mana = 100
+var max_mp = 6
 
-func _ready():
+func _ready() :
 	pass
-	
-	
-#func _process(delta):
-#	# Called every frame. Delta is time since last frame.
-#	# Update game logic here.
-#	pass
+
+func _on_Area2D_input_event(viewport, event, shape_idx):
+	pass # replace with function body
