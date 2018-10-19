@@ -7,6 +7,7 @@ import Grid
 import Character
 import SGI 
 
+TIME_TURN = 30
 RAY_MAP = 10
 HEROES = ["Ninja"]
 
@@ -33,6 +34,9 @@ class Battle(SGI.SGI) :
 			coord = random.choice(self.grid.available_coords)
 			myteam += [Character.Character(name, lp, mana, mp, coord)]
 		return myteam
+
+	def get_cells_start(self) :
+		return self.grid.cells_start
 
 	def get_state(self) :
 		#on a besoin d'envoye seulement les characters
@@ -61,7 +65,7 @@ class Battle(SGI.SGI) :
 					break
 				self.on_character = whos_turn
 				time_begin_turn = time.time()
-				while time.time() < time_begin_turn + 30 :
+				while time.time() < time_begin_turn + TIME_TURN :
 					asyncio.sleep(0)
 
 

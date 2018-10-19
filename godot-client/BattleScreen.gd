@@ -1,27 +1,29 @@
 extends Node2D
 
-var Ninja = preload("res://Ninja.tscn")
-var Zombie = preload("res://Zombie.tscn")
+var Character_class = preload("res://Character.tscn")
 
 var is_on_battle = false
+var on_step = "not_begin"
+var state = null
 
 func on_msg(data) :
 	if not "step" in data :
 		print("Error BattleScreen on_msg have no step")
-	if data["step"] == "new_game" :
+		return
+	on_step = data["step"]
+	if on_step == "new_game" :
 		new_game(data)
 
-func create_character(cell, name) :
-	var character
-	if name == "Ninja" :
-		character = Ninja.instance()
-	elif name == "Zombie" :
-		character = Zombie.instance()
-	character.scale.x = 0.15
-	character.scale.y = 0.15
-	character.position.x = cell.position.x
-	character.position.y = cell.position.y
-	character.visible = true
+func update(data) :
+	if data["step"] == "coords_begin" :
+		pass 
+
+#modifier avec l'arrivé des team !
+func create_character(name, cell) :
+	var character = Character_class.instance()
+	var hero_position = [cell.position.x, cell.position.y]
+	character.create_hero(name, hero_position)
+	character.set_name(name)
 	add_child(character)
 
 func on_cell_selected(cell) :
@@ -48,8 +50,7 @@ func new_game(data) :
 	$Map.create_map_from_grid(grid)
 	for hero in state["team"] :
 		var cell_spawn = $Map.get_cell_node_from_coord(hero["coord"])
-		create_character(cell_spawn, hero["name"])
-	
+		create_character(hero["name"], cell_spawn)
 
 func _ready():
 	pass

@@ -2,6 +2,8 @@
 
 import random
 
+NB_CELLS_START = 5
+
 class Cell() :
 
 	kinds = ["hole", "flor", "full"]
@@ -24,6 +26,7 @@ class Grid() :
 		self.grid = []
 		self.create_map(ray)
 		self.available_coords = self.get_available_coords()
+		self.cells_start = [random.choice(self.available_coords) for _ in range(5)]
 
 	def create_map(self, ray) :
 		"""Create the map"""

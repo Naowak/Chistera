@@ -3,6 +3,7 @@ extends Node2D
 #pour changer de scene, il suffit de changer new_screen
 var screen = "Menu"
 var new_screen = "Menu"
+var background_color = Color(0.3, 0.3, 0.3)
 
 func _ready():
 	$Menu.visible = true

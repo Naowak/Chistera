@@ -6,7 +6,7 @@ var Cell_full = preload("res://Cell_full.tscn")
 var mv_r = [47, 0]
 var mv_dr = [24, 31]
 var diff_y = -6 #between flor and full
-var pos_center = [550, 350]
+var pos_center = [500, 380]
 
 var grid = null
 var ray = 0

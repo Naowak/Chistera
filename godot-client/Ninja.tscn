@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://assets/ninja_sprites/png/Idle__000.png" type="Texture" id=1]
 [ext_resource path="res://assets/ninja_sprites/png/Idle__001.png" type="Texture" id=2]
@@ -30,7 +30,6 @@
 [ext_resource path="res://assets/ninja_sprites/png/Jump_Attack__007.png" type="Texture" id=28]
 [ext_resource path="res://assets/ninja_sprites/png/Jump_Attack__008.png" type="Texture" id=29]
 [ext_resource path="res://assets/ninja_sprites/png/Jump_Attack__009.png" type="Texture" id=30]
-[ext_resource path="res://Ninja.gd" type="Script" id=31]
 
 [sub_resource type="SpriteFrames" id=1]
 
@@ -52,37 +51,12 @@ animations = [ {
 } ]
 _sections_unfolded = [ "Resource" ]
 
-[sub_resource type="CapsuleShape2D" id=2]
-
-custom_solver_bias = 0.0
-radius = 14.0653
-height = 19.2136
-
-[node name="Ninja" type="AnimatedSprite" index="0"]
+[node name="Ninja" type="AnimatedSprite"]
 
 frames = SubResource( 1 )
 animation = "normal"
 frame = 2
 offset = Vector2( -20, -210 )
-script = ExtResource( 31 )
 _sections_unfolded = [ "Transform", "Visibility" ]
-
-[node name="Area2D" type="Area2D" parent="." index="0"]
-
-input_pickable = true
-gravity_vec = Vector2( 0, 1 )
-gravity = 98.0
-linear_damp = 0.1
-angular_damp = 1.0
-audio_bus_override = false
-audio_bus_name = "Master"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
-
-position = Vector2( -18.2814, -202.556 )
-scale = Vector2( 10.6862, 11.2917 )
-shape = SubResource( 2 )
-
-[connection signal="input_event" from="Area2D" to="." method="_on_Area2D_input_event"]
 
 

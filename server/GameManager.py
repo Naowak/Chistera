@@ -19,10 +19,11 @@ class GameManager() :
 	def treat_request(self, client, data) :
 		if not "step" in data :
 			print("Step pas défini !")
-		if data["step"] == "ask_to_play" :
+		elif data["step"] == "ask_to_play" :
 			self.ask_to_play += [[client, data["team"]]]
 			if len(self.ask_to_play) >= NUMBER_PLAYER_GAME :
 				self.create_game()
+		# elif data["step"] == ""
 
 
 	def create_game(self) :
@@ -33,8 +34,10 @@ class GameManager() :
 
 		msg = {"step" : "new_game",
 			"grid" : new_battle.grid.get_serializable_grid(),
+			"cells_start" : new_battle.get_cells_start(),
 			"state" : new_battle.get_state()}
 		player.send(msg)
+		# loop.run_until_complete(new_battle.run())
 
 	def play_the_game(self, gid) :
 		game = self.get_game_from_id(gid)

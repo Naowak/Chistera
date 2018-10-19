@@ -121,6 +121,7 @@ align = 1
 
 [node name="BattleLauncher" type="Node2D" parent="." index="1"]
 
+editor/display_folded = true
 script = ExtResource( 3 )
 
 [node name="ButtonStart" type="Button" parent="BattleLauncher" index="0"]

@@ -1,0 +1,4 @@
+name = Ninja
+lp_max = 1000
+mana_max = 100
+mp_max = 5

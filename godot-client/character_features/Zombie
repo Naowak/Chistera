@@ -1,0 +1,4 @@
+name = Zombie
+lp_max = 800
+mana_max = 100
+mp_max = 2

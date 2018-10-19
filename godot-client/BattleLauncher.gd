@@ -1,7 +1,7 @@
 extends Node2D
 
 var team = []
-var team_len_max = 1
+var team_len_max = 2
 
 func character_selected(name) :
 	if not name in team :
