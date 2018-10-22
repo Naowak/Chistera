@@ -42,6 +42,7 @@ class MyClient(WebSocket) :
 		print(self.address, 'closed')
 
 	def send(self, msg) :
+		print("Message Envoyé : " + str(msg))
 		self.sendMessage(encode(msg))
 
 	

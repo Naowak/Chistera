@@ -2,15 +2,13 @@
 
 class Character() :
 
-	def __init__(self, name, lp, mana, mp, coord) :
+	def __init__(self, name, lp, mana, mp, coord, player) :
 		self.name = name
 		self.lp = lp
 		self.mana = mana
 		self.mp = mp
 		self.coord = coord
-
-	def move(self, coord) :
-		self.coord = coord
+		self.player = player
 
 	def get_state(self) :
 		return {"name" : self.name,

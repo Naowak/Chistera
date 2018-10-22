@@ -13,8 +13,9 @@ var max_mp
 var lp
 var mana
 var mp
+var coord
 
-func create_hero(name, hero_position) :
+func create_hero(name, cell) :
 	NAME = name
 	var hero
 	if name == "Ninja" :
@@ -24,12 +25,9 @@ func create_hero(name, hero_position) :
 	else :
 		print("Name isn't defined for any hero.")
 		return
-	position.x = hero_position[0]
-	position.y = hero_position[1] - 5
+	set_on_cell(cell)
 	hero.scale.x = 0.15
 	hero.scale.y = 0.15
-#	$HeadingChar.scale.x = 3
-#	$HeadingChar.scale.y = 3
 	add_child(hero)
 	extract_features(name)
 	get_node("HeadingChar/labelname").text = NAME
@@ -55,6 +53,16 @@ func extract_features(name) :
 			max_mp = int(tmp[1])
 			mp = max_mp
 
+func set_on_cell(cell) :
+	#libère l'ancienne cell et ajoute à la nouvelle
+	if coord :
+		var oc = get_tree().get_root().get_node("Jeu/BattleScreen/Map").get_cell_node_from_coord(coord)
+		oc.remove_character()
+	position.x = cell.position.x
+	position.y = cell.position.y - 5
+	coord = [cell.q, cell.r]
+	cell.fill_character(self)
+
 func _ready() :
 	pass
 	
@@ -64,13 +72,13 @@ func _input(event):
 			$HeadingChar.visible = false
 
 func _on_Area2D_input_event(viewport, event, shape_idx):
-#	var gs = get_tree().get_root().get_node("Jeu/BattleScreen")
+	var bs = get_tree().get_root().get_node("Jeu/BattleScreen")
 	if event is InputEventMouseMotion :
 		$HeadingChar.visible = true
 		$HeadingChar/Timer.start()
-#		if event is InputEventMouseButton :
-#			if event.button_index == BUTTON_LEFT :
-#				gs.on_character_selected(self)
+	elif event is InputEventMouseButton :
+		if event.button_index == BUTTON_LEFT :
+			bs.on_character_selected(self)
 
 func _process(delta) :
 	pass

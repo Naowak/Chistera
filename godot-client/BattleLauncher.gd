@@ -1,7 +1,11 @@
 extends Node2D
 
+var network = null
 var team = []
 var team_len_max = 2
+
+func on_msg(data) :
+	print("Msg recv on BattleLauncher")
 
 func character_selected(name) :
 	if not name in team :
@@ -17,16 +21,21 @@ func character_selected(name) :
 func character_unselected(name) :
 	team.erase(name)
 	get_node(name + "Icon" + "/CheckButton").pressed = false
+	
+func ask_to_play(team):
+	var dict = {}
+	dict["step"] = "ask_to_play"
+	dict["team"] = team
+	network.sendMessage(dict)
 
 func _ready():
-	# Called when the node is added to the scene for the first time.
-	# Initialization here
-	pass
+	network = get_tree().get_root().get_node("Jeu/Network")
 
 func _on_ButtonStart_pressed():
 	if len(team) == team_len_max :
 		var node_jeu = get_tree().get_root().get_node("Jeu")
-		node_jeu.get_node("BattleScreen").ask_to_play(team)
-		node_jeu.new_screen = "BattleScreen"
+		ask_to_play(team)
+		node_jeu.change_receiver("BattleScreen")
+		node_jeu.change_screen("BattleScreen")
 		
 	

@@ -15,10 +15,14 @@ func _on_message(msg):
 	var data = decode(msg)
 #	print("Message reçu : ", str(data))
 	var nj = get_tree().get_root().get_node("Jeu")
-	nj.get_node(nj.screen).on_msg(data)
+#	nj.get_node(nj.screen).on_msg(data)
+	nj.node_receiver.on_msg(data)
 	
 
 func sendMessage(msg) :
+	var battlescreen = get_tree().get_root().get_node("Jeu/BattleScreen")
+	if battlescreen.is_on_battle :
+		msg["gid"] = battlescreen.battle_gid
 	var mess = encode(msg)
 	websocket.send(mess)
 

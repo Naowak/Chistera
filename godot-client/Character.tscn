@@ -9,7 +9,7 @@ custom_solver_bias = 0.0
 radius = 1.32094
 height = 2.21339
 
-[node name="Character" type="Node2D" index="0"]
+[node name="Character" type="Node2D"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Transform" ]
