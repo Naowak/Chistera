@@ -37,12 +37,14 @@ class GameManager() :
 		client.send(msg)
 		if len(self.ask_to_play) >= NUMBER_PLAYER_GAME :
 			self.create_game()
+	
 
 	def create_game(self) :
 		client, team = self.ask_to_play.pop(0)
 		game_id = free_game_ids.pop(0)
 		new_battle = Battle.Battle(game_id, client, team) # To MODIFY
 		self.games[game_id] = new_battle
+		new_battle.step = "new_game"
 
 		msg = {"gid" : game_id,
 			"step" : "new_game",

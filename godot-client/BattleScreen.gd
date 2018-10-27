@@ -2,6 +2,7 @@ extends Node2D
 
 var Character_class = preload("res://Character.tscn")
 var StepCellsStart = preload("res://StepCellsStart.tscn")
+var StepPlayTurn = preload("res://StepPlayTurn.tscn")
 
 var network = null 
 
@@ -14,26 +15,38 @@ func on_msg(data) :
 	if not "step" in data :
 		print("Error BattleScreen on_msg have no step")
 		return
-	on_step = data["step"]
 	if "error" in data :
-		print(data["error"])
-		return
+		if len(data["error"]) > 0 :
+			print(data["error"])
+			return
 		
-	if on_step == "ask_to_play" :
+	if data["step"] == "ask_to_play" :
 		if data["action"]["name"] == "wait" :
 			$MessageWait.visible = true
+			on_step = "ask_to_play"
 			
-	elif on_step == "new_game" :
+	elif data["step"] == "new_game" :
 		$MessageWait.visible = false
+		on_step = "new_game"
 		new_game(data)
 		
-	elif on_step == "coords_begin" :
+	elif data["step"] == "coords_begin" :
 		if data["action"]["name"] == "give_coords_begin" :
 			var scs = StepCellsStart.instance()
 			add_child(scs)
-			scs.start(data["action"]["coords"], data["action"]["time_one_turn"])
+			scs.start(data)
+	
+	elif data["step"] == "on_turn" : 
+		if data["action"]["name"] == "new_turn" :
+			print("coucou")
+			var spt = StepPlayTurn.instance()
+			add_child(spt)
+			spt.start(data)
 			
-
+func pass_turn() :
+	var msg = {"step" : on_step, 
+		"action" : {"name" : "pass_turn"}}
+	network.sendMessage(msg)
 
 #modifier avec l'arrivé des team !
 func create_character(name, cell) :
@@ -41,6 +54,9 @@ func create_character(name, cell) :
 	character.create_hero(name, cell)
 	character.set_name(name)
 	add_child(character)
+	
+func get_character(name) :
+	return get_node(name)
 
 func on_cell_selected(cell) :
 #	var cell_flor = get_tree().get_nodes_in_group("cell_flor")
@@ -60,6 +76,8 @@ func on_cell_selected(cell) :
 #			cpt += 1
 	if on_step == "coords_begin" :
 		$StepCellsStart.on_cell_selected(cell)
+	elif on_step == "on_turn" :
+		$StepPlayTurn.on_cell_selected(cell)
 	else :
 		print("Error Step NotKnown : " + on_step + " : cells_selected Battlescreen")
 
@@ -69,9 +87,6 @@ func on_character_selected(character) :
 	else :
 		print("Error Step Not Known : character_selected Battlescreen")
 	
-#func end_StepCellsStart() :
-#	actual_scene = null
-
 func new_game(data) :
 	is_on_battle = true
 	battle_gid = data["gid"]

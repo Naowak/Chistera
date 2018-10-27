@@ -1,15 +1,13 @@
 #coding: utf-8
 
 import random
-import asyncio
 import time
 import Grid
 import Character
 import SGI 
+import threading
 
 HEROES = ["Ninja"]
-loop = asyncio.get_event_loop()
-
 
 class Player :
 
@@ -43,7 +41,7 @@ class Player :
 
 class Battle(SGI.SGI) :
 
-	TIME_ONE_TURN = 30
+	TIME_ONE_TURN = 10
 	RAY_MAP = 10
 
 	def __init__(self, game_id, client, team) :
@@ -61,10 +59,12 @@ class Battle(SGI.SGI) :
 		self.on_player = self.player_one #To MODIFY
 		self.on_character = None
 		self.iterator_timeline = 0
-		self.time_begin_turn = None
 		self.error = ""
 		self.pass_turn = False
 
+		self.time_begin_turn = None
+
+		self.my_thread = None
 	# ------------------------- Access Information ----------------------
 
 
@@ -79,7 +79,7 @@ class Battle(SGI.SGI) :
 			timeline += [elem]
 		return timeline
 
-	def is_finished(self) :
+	def is_game_finished(self) :
 		for char in self.team :
 			if not char.is_dead() :
 				return False
@@ -96,7 +96,7 @@ class Battle(SGI.SGI) :
 		data["action"] = self.action
 		data["team"] = data_team
 		data["on_player"] = self.on_player.get_name() if self.on_player else "Unknown"
-		data["on_character"] = self.on_character
+		data["on_character"] = self.on_character.name if self.on_character else "None"
 		data["turn"] = self.turn
 		data["error"] = self.error
 		self.error = ""
@@ -137,20 +137,23 @@ class Battle(SGI.SGI) :
 
 	def player_ready(self, player) :
 		player.ready = True
-		print("ready " , str(self.player_one.ready))
 		if self.player_one.ready : # TO MODIFY
 			self.step = "coords_begin"
+			self.on_player = self.player_one
 			self.give_coords_begin()
+			self.my_thread = threading.Thread(target=self.play_game, args=())
+			self.my_thread.start()
 
 	def give_coords_begin(self) :
+		## USE NOTIFY ALL CLIENTS
 		gid = self.game_id
 		msg = {"step" : "coords_begin",
 			"action" : { "name" : "give_coords_begin",
 				"coords" : self.get_coords_begin(), #TO MODIFY
-				"time_one_turn" : self.TIME_ONE_TURN}
+				"time_one_turn" : self.TIME_ONE_TURN,
+				"on_player" : self.player_one.sock.name}
 			}
 		self.on_player.sock.send(msg)
-		loop.run_until_complete(self.wait_coords_begin(self.on_player))
 
 	# -------------------------- Manager --------------------------
 
@@ -164,51 +167,74 @@ class Battle(SGI.SGI) :
 			return False
 		return p
 
+
 	def treat_request(self, client, data) :
 		player = self.verify_client(client)
 		if not player :
 			self.notify_all_clients()
 			return
 
-		if data["step"] == "new_game" :
+		if data["step"] == "new_game" and self.step == "new_game":
 			if data["action"]["name"] == "ready" :
 				self.player_ready(player)
 		else :
-			if data["step"] == "coords_begin" :
+			if data["step"] == "coords_begin" and self.step == "coords_begin" :
 				if data["action"]["name"] == "move_character" :
 					self.move_character_while_coords_begin(player, data)
 					self.notify_all_clients()
 
-				if data["action"]["name"] == "pass_turn" :
-					pass_turn = True
-					pass
+				elif data["action"]["name"] == "pass_turn" :
+					self.pass_turn = True
+
+			if data["step"] == "on_turn" :
+				self.pass_turn = True
 
 
 
 	# ------------------------- Turn Wait --------------------------
 
-	async def wait_coords_begin(self, player) :
-		self.on_player = player
+	def play_game(self) :
+		self.wait_coords_begin()
+		self.iterator_timeline = -1
+		self.turn = 0
+		self.prepare_turn()
+		while not self.is_finished and not self.is_game_finished() :
+			# POUR LINSTANT ON LAISSE DEUX MESSAGES SI UN CLIENT SE DECO
+			self.prepare_turn()
+			self.notify_all_clients()
+			self.wait_one_turn()
+		self.is_finished = True
+		self.step = "finished"
+		self.action = ""
+		self.notify_all_clients()
+
+	def catch_client_out(self) :
+		if not self.player_one.sock.is_connected :
+			self.error += "Error : Player " + self.player_one.sock.name + " has deconnected."
+			self.is_finished = True
+			print(self.error)
+
+	def wait_coords_begin(self) :
 		self.time_begin_turn = time.time()
-		while not self.pass_turn and self.time_begin_turn + self.TIME_ONE_TURN < time.time() :
-			asyncio.sleep(0)
-		print("End Coords Begin !")
+		while not self.pass_turn and self.time_begin_turn + self.TIME_ONE_TURN > time.time() and not self.is_finished :
+			self.catch_client_out()
+			time.sleep(1)
+		self.pass_turn = False
 
-
-	async def wait_one_turn(self) :
-
-		def prepare_next_turn(self) :
-			self.pass_turn = False
-			self.iterator_timeline = (self.iterator_timeline + 1) % len(self.timeline)
-			if self.iterator_timeline == 0 :
-				self.turn += 1
-			self.on_character = self.timeline[self.iterator_time]
-			self.on_player = self.on_character.player
-
+	def wait_one_turn(self) :
 		self.time_begin_turn = time.time()
-		while not self.pass_turn and self.time_begin_turn + self.TIME_ONE_TURN < time.time() :
-			asyncio.sleep(0)
-		prepare_next_turn(self)
+		while not self.pass_turn and self.time_begin_turn + self.TIME_ONE_TURN > time.time() and not self.is_finished :
+			self.catch_client_out()
+			time.sleep(1)		
 
+	def prepare_turn(self) :
+		self.step = "on_turn"
+		self.action = {"name" : "new_turn", "time_one_turn" : self.TIME_ONE_TURN}
+		self.pass_turn = False
+		self.iterator_timeline = (self.iterator_timeline + 1) % len(self.timeline)
+		if self.iterator_timeline == 0 :
+			self.turn += 1
+		self.on_character = self.timeline[self.iterator_timeline]
+		self.on_player = self.on_character.player
 
 

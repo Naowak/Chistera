@@ -32,18 +32,20 @@ class MyClient(WebSocket) :
 		print(self.address, 'connected')
 		self.id = free_ids.pop(0)
 		self.name = ""
+		self.is_connected = True
 		# for client in clients:
 		# 	client.sendMessage(self.address[0] + u' - connected')
 		clients.append(self)
 
 	def handleClose(self) :
+		self.is_connected = False
 		clients.remove(self)
 		free_ids.append(self.id)
 		print(self.address, 'closed')
 
 	def send(self, msg) :
-		print("Message Envoyé : " + str(msg))
 		self.sendMessage(encode(msg))
+		print("Message Envoyé : " + str(msg))
 
 	
 
